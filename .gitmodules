@@ -1,0 +1,3 @@
+[submodule "node_modules/loader"]
+	path = node_modules/loader
+	url = git://github.com/jonlb/node-jxLoader.git
