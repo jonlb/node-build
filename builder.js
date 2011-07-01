@@ -47,7 +47,7 @@ Builder.build = function(target) {
     _logger.info("Processing target: " + target);
     
     //load the target file
-    var _targets[target] = (require(_config.targets + "/" + target + ".target"))(_config);
+    _targets[target] = (require(_config.targets + "/" + target + ".target"))(_config);
     _logger.debug("Starting target",_targets[target]);
     //start loading in the target's required dependencies 
     if (!nil(_targets[target].depends)) {
