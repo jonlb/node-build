@@ -50,7 +50,7 @@ Builder.build = function(target) {
     
     //load the target file
     fn = require(_config.targets + "/" + target + ".target");
-    _targets[target] = fn(_config);
+    _targets[target] = fn(_config, _logger);
     _logger.info("Starting target",_targets[target]);
     /*
     //start loading in the target's required dependencies 
