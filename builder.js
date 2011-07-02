@@ -99,9 +99,9 @@ importTargets = function(depends){
                 _logger.info("Target config for " + d + ":\n" + util.inspect(_targets[d],false,null));
                 if (!nil(_targets[d].depends)) {
                     importTargets(_targets[d].depends);
-                } else {
-                    _queue.push(d);
                 }
+                _queue.push(d);
+                
             }
         });
     }
