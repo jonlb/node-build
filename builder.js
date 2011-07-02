@@ -16,7 +16,9 @@ var _config,
     fs = require('fs'),
     path = require("path"),
     util = require("util"),
-    sys = require("sys");
+    sys = require("sys"),
+    when = require("promise").when,
+    Promise = require("promise").Promise;
 
 
 
@@ -74,9 +76,8 @@ Builder.build = function(target) {
     _queue.push(target);
     
     _logger.info("queue order: " + util.inspect(_queue, false, null));
-    //and figure out the order
-    
     //begin processing targets
+    runTargets();
 };
 
 Builder.loadInternalTasks = function(){
@@ -107,6 +108,42 @@ importTargets = function(depends){
     }
 };
 
-calculateDependencies = function(target){
+var _stack;
+
+runTargets = function(){
+    var target = _queue.shift();
+    _stack = Array.clone(_targets[target].tasks);
+    
+    _logger.info("Executing target: " + target);
+    _logger.info("Target description: " + _target[target].description);
+    
+    executeTarget(target).then(function(){
+        if (_queue.length > 0) { 
+            runTargets();
+        }
+    });
     
 };
+
+
+
+executeTarget = function(){
+    var p = new Promise();
+    
+    var task = _stack.shift(),
+        taskName = Object.keys(task)[0],
+        options = task[taskName];
+        
+    _tasks[taskName](options, _config, _logger).then(function(){
+        if (_stack.length == 0) {
+            p.resolve(true);
+        } else {
+            executeTarget().then(function(){p.resolve(true);});
+        }
+    }, function(err){
+        p.reject(err);
+    });
+       
+    return p;
+};
+            
