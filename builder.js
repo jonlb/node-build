@@ -50,6 +50,8 @@ Builder.build = function(target) {
     
     //load the target file
     fn = require(_config.targets + "/" + target + ".target");
+    _logger.debug("Function from target file",fn);
+    /*
     _targets[target] = fn(_config);
     _logger.info("Starting target",_targets[target]);
     //start loading in the target's required dependencies 
@@ -61,7 +63,7 @@ Builder.build = function(target) {
     //and figure out the order
     
     //begin processing targets
-    
+    */
 };
 
 Builder.loadInternalTasks = function(){
