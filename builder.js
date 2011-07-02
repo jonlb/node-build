@@ -47,7 +47,7 @@ Builder.config = function(config, logfile){
         _logger.debug("config is not nil");
     }
     
-    _logger.debug("The passed in config",JSON.stringify(config));
+    _logger.debug("The passed in config");
     _config = config;
     
     Builder.loadTasks(config.tasks);
