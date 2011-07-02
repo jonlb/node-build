@@ -66,17 +66,15 @@ Builder.build = function(target) {
     fn = require(_config.targets + "/" + target + ".target");
     _targets[target] = fn(_config, _logger);
     _logger.info("Starting target" + util.inspect(_targets[target], false, null));
-    /*
     //start loading in the target's required dependencies 
     if (!nil(_targets[target].depends)) {
-        //importTargets(_targets[target].depends);
+        importTargets(_targets[target].depends);
     }
     
-    _logger.info("queue order: ",_queue);
+    _logger.info("queue order: " + util.inspect(_queue, false, null));
     //and figure out the order
     
     //begin processing targets
-    */
 };
 
 Builder.loadInternalTasks = function(){
