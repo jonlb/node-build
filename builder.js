@@ -65,7 +65,7 @@ Builder.build = function(target) {
     //load the target file
     fn = require(_config.targets + "/" + target + ".target");
     _targets[target] = fn(_config, _logger);
-    _logger.info("Starting target",_targets[target]);
+    _logger.info("Starting target" + util.inspect(_targets[target], false, null));
     /*
     //start loading in the target's required dependencies 
     if (!nil(_targets[target].depends)) {
