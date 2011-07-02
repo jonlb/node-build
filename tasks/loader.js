@@ -6,9 +6,7 @@ var jxLoader = require('loader/jxLoader').jxLoader,
 //the loader instance itself
 var loader = null;
 
-
-
-modules.exports.tasks = {
+module.exports.tasks = {
     combine: function(options, config){
         var p = new Promise();
         if (loader == null) {
