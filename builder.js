@@ -94,7 +94,7 @@ importTargets = function(depends){
     _logger.debug("in ImportTargets for " + util.inspect(depends,false,null));
     if (!nil(depends)) {
         Array.from(depends).each(function(d){
-            if (!_targets.contains(d)) {
+            if (!Object.keys(_targets).contains(d)) {
                 _targets[d] = (require(_config.targets + "/" + target + ".target"))(_config);
                 _logger.info("Target config for " + d + ":\n" + util.inspect(_targets[d],false,null));
                 if (!nil(_targets[d].depends)) {
