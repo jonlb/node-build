@@ -4,11 +4,13 @@ var jxLoader = require('loader/jxLoader').jxLoader,
     fs = require('fs');
 
 //the loader instance itself
-var loader = null;
+var loader = null,
+    _logger;
 
 module.exports.tasks = {
-    combine: function(options, config){
+    combine: function(options, config, logger){
         var p = new Promise();
+        _logger = logger;
         if (loader == null) {
             loader = new jxLoader(config.loader.base);
             loader.addEvent('loadRepoDone', function(){
@@ -22,8 +24,9 @@ module.exports.tasks = {
         
     },
     
-    createDeps: function(options, config){
+    createDeps: function(options, config, logger){
         var p = new Promise();
+        _logger = logger;
         if (loader == null) {
             loader = new jxLoader(config.loader.base);
             loader.addEvent('loadRepoDone', function(){
@@ -49,7 +52,7 @@ var runCombine = function(options, promise) {
     var exclude = !nil(options.exclude) ? options.exclude : null;
     var opts = !nil(options.opts) ? options.opts : true;
     var compiled = loader.compile(classes, repos, type, includeDeps, theme, exclude, opts);
-    logger.info("returned from compile: " + util.inspect(compiled, false, null));
+    _logger.info("returned from compile: " + util.inspect(compiled, false, null));
     fs.writeFileSync(options.target, compiled.source, 'utf-8');
     promise.resolve(true);
 }
