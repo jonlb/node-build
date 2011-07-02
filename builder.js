@@ -11,7 +11,7 @@ var _config,
     _targets = {},
     _logger,
     _queue = [],
-    winston = require('winston'),
+    winston = require('logger/winston'),
     fs = require('fs');
 
 
