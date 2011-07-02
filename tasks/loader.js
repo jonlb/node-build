@@ -1,7 +1,8 @@
 //require dependencies
 var jxLoader = require('loader/jxLoader').jxLoader,
     Promise = require('promise').Promise,
-    fs = require('fs');
+    fs = require('fs'),
+    util = require("util");
 
 //the loader instance itself
 var loader = null,
