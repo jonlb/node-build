@@ -33,12 +33,6 @@ Builder.loadTasks = function(filename) {
 
 Builder.config = function(config, logfile){
     
-    if (nil(config)) {
-        _logger.debug("config is nil");
-    } else {
-        _logger.debug("config is not nil");
-    }
-    
     _logger = new (winston.Logger)({
         transports: [
             new (winston.transports.Console)({level: "silly"}),
@@ -46,6 +40,12 @@ Builder.config = function(config, logfile){
         ]
     });
     _logger.emitErrs = false;
+    
+    if (nil(config)) {
+        _logger.debug("config is nil");
+    } else {
+        _logger.debug("config is not nil");
+    }
     
     _logger.debug("The passed in config",JSON.stringify(config));
     _config = config;
