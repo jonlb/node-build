@@ -71,6 +71,8 @@ Builder.build = function(target) {
         importTargets(_targets[target].depends);
     }
     
+    _queue.push(target);
+    
     _logger.info("queue order: " + util.inspect(_queue, false, null));
     //and figure out the order
     
