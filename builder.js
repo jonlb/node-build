@@ -32,13 +32,18 @@ Builder.loadTasks = function(filename) {
 
 
 Builder.config = function(config, logfile){
-    _config = config;
+    
+    
     _logger = new (winston.Logger)({
         transports: [
             new (winston.transports.Console)({level: "silly"}),
             new (winston.transports.File)({ filename: logfile, level: "silly" })
         ]
     });
+    
+    _logger.debug("The passed in config",config);
+    _config = config;
+    
     Builder.loadTasks(config.tasks);
     Builder.loadInternalTasks();
     return Builder;
