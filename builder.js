@@ -11,6 +11,7 @@ var _config,
     _targets = {},
     _logger,
     _queue = [],
+    _tasks = {},
     winston = require('logger/winston'),
     fs = require('fs'),
     path = require("path");
@@ -34,7 +35,7 @@ Builder.config = function(config, logfile){
     _config = config;
     _logger = new (winston.Logger)({
         transports: [
-            //new (winston.transports.Console)(),
+            new (winston.transports.Console)(),
             new (winston.transports.File)({ filename: logfile })
         ]
     });
