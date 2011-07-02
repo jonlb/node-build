@@ -47,7 +47,7 @@ Builder.config = function(config, logfile){
         _logger.debug("config is nil");
     } else {
         _logger.debug("config is not nil");
-        _logger.info("config: ", { test: 'somes string'});
+        _logger.info("config: ", config);
     }
     
     _logger.debug("The passed in config");
