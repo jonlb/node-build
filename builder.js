@@ -91,7 +91,7 @@ Builder.loadInternalTasks = function(){
 module.exports = Builder;
 
 importTargets = function(depends){
-    _logger.debug("in ImportTargets for ", depends);
+    _logger.debug("in ImportTargets for " + util.inspect(depends,false,null));
     if (!nil(depends)) {
         Array.from(depends).each(function(d){
             if (!_targets.contains(d)) {
