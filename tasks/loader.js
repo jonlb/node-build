@@ -51,7 +51,7 @@ var runCombine = function(options, promise) {
     var includeDeps = !nil(options.includeDeps) ? options.includeDeps : true;
     var theme = !nil(options.theme) ? options.theme : null;
     var exclude = !nil(options.exclude) ? options.exclude : null;
-    var opts = !nil(options.opts) ? options.opts ? true;
+    var opts = !nil(options.opts) ? options.opts : true;
     var compiled = loader.compile(classes, repos, type, includeDeps, theme, exclude, opts);
     fs.writeFile(options.target, compiled, 'utf-8').then(function(){
         promise.resolve(true); 
