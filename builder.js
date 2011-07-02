@@ -50,10 +50,9 @@ Builder.build = function(target) {
     
     //load the target file
     fn = require(_config.targets + "/" + target + ".target");
-    _logger.debug("Function from target file",fn);
-    /*
     _targets[target] = fn(_config);
     _logger.info("Starting target",_targets[target]);
+    /*
     //start loading in the target's required dependencies 
     if (!nil(_targets[target].depends)) {
         //importTargets(_targets[target].depends);
