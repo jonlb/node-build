@@ -62,7 +62,7 @@ Builder.build = function(target) {
 };
 
 Builder.loadInternalTasks = function(){
-    var files = fs.readdirSync(path.normalize(__dirname + "/tasks");
+    var files = fs.readdirSync(path.normalize(__dirname + "/tasks"));
     Array.from(files).each(function(file){
         Builder.loadTasks("./tasks/" + file); 
     });
