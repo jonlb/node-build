@@ -15,6 +15,7 @@ var _config,
     winston = require('logger/winston'),
     fs = require('fs'),
     path = require("path"),
+    qs = require('querystring'),
     sys = require("sys");
 
 
@@ -46,7 +47,7 @@ Builder.config = function(config, logfile){
         _logger.debug("config is nil");
     } else {
         _logger.debug("config is not nil");
-        _logger.info("config: ", config);
+        _logger.info("config: " + ' ' + qs.unescape(qs.stringify(config, ',')));
     }
     
     _logger.debug("The passed in config");
