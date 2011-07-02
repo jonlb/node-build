@@ -115,7 +115,7 @@ runTargets = function(){
     _stack = Array.clone(_targets[target].tasks);
     
     _logger.info("Executing target: " + target);
-    _logger.info("Target description: " + _target[target].description);
+    _logger.info("Target description: " + _targets[target].description);
     
     executeTarget(target).then(function(){
         if (_queue.length > 0) { 
