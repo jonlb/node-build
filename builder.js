@@ -40,6 +40,7 @@ Builder.config = function(config, logfile){
             new (winston.transports.File)({ filename: logfile, level: "silly" })
         ]
     });
+    _logger.emitErrs = false;
     
     _logger.debug("The passed in config",config);
     _config = config;
