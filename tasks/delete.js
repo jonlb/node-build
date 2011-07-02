@@ -12,7 +12,7 @@ module.exports.tasks = {
                 fs.unlinkSync(file);
             }
         });
-        
+        p.resolve(true);
         return p;
     }
 };
