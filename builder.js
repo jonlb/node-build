@@ -35,8 +35,8 @@ Builder.config = function(config, logfile){
     _config = config;
     _logger = new (winston.Logger)({
         transports: [
-            new (winston.transports.Console)({level: "error"}),
-            new (winston.transports.File)({ filename: logfile, level: "error" })
+            new (winston.transports.Console)({level: "silly"}),
+            new (winston.transports.File)({ filename: logfile, level: "silly" })
         ]
     });
     Builder.loadTasks(config.tasks);
