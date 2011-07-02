@@ -49,14 +49,15 @@ Builder.build = function(target) {
     _logger.info("Processing target: " + target);
     
     //load the target file
-    _targets[target] = (require(_config.targets + "/" + target + ".target"))(_config);
-    _logger.debug("Starting target",_targets[target]);
+    fn = require(_config.targets + "/" + target + ".target");
+    _targets[target] = fn(_config);
+    _logger.info("Starting target",_targets[target]);
     //start loading in the target's required dependencies 
     if (!nil(_targets[target].depends)) {
         importTargets(_targets[target].depends);
     }
     
-    _logger.debug("queue order: ",_queue);
+    _logger.info("queue order: ",_queue);
     //and figure out the order
     
     //begin processing targets
