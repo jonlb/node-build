@@ -1,7 +1,7 @@
 //require dependencies
 var jxLoader = require('loader/jxLoader').jxLoader,
     Promise = require('promise').Promise,
-    fs = require('fs-promise');
+    fs = require('fs');
 
 //the loader instance itself
 var loader = null;
@@ -27,15 +27,13 @@ module.exports.tasks = {
         if (loader == null) {
             loader = new jxLoader(config.loader.base);
             loader.addEvent('loadRepoDone', function(){
-               fs.writeFile(options.target + '/deps.json',JSON.stringify(loader.getRepoArray),'utf-8')
-               .then(function(){ p.resolve(true); },
-               function(err){ p.reject(err); });
+               fs.writeFileSync(options.target + '/deps.json',JSON.stringify(loader.getRepoArray),'utf-8')
+               p.resolve(true);
             });
             loader.addRepository(config.loader.repos);
         } else {
-            fs.writeFile(options.target + '/deps.json',JSON.stringify(loader.getRepoArray),'utf-8')
-            .then(function(){ p.resolve(true); },
-            function(err){ p.reject(err); });
+            fs.writeFileSync(options.target + '/deps.json',JSON.stringify(loader.getRepoArray),'utf-8');
+            p.resolve(true);
         }
         return p;
     }
@@ -51,9 +49,7 @@ var runCombine = function(options, promise) {
     var exclude = !nil(options.exclude) ? options.exclude : null;
     var opts = !nil(options.opts) ? options.opts : true;
     var compiled = loader.compile(classes, repos, type, includeDeps, theme, exclude, opts);
-    fs.writeFile(options.target, compiled.source, 'utf-8').then(function(){
-        promise.resolve(true); 
-    }, function(err){
-        promise.reject(err);
-    });
+    logger.info("returned from compile: " + util.inspect(compiled, false, null));
+    fs.writeFileSync(options.target, compiled.source, 'utf-8');
+    promise.resolve(true);
 }
