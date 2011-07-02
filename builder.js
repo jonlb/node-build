@@ -42,7 +42,7 @@ Builder.config = function(config, logfile){
     });
     _logger.emitErrs = false;
     
-    _logger.debug("The passed in config",config);
+    _logger.debug("The passed in config",JSON.stringify(config));
     _config = config;
     
     Builder.loadTasks(config.tasks);
