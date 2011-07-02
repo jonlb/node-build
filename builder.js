@@ -33,6 +33,11 @@ Builder.loadTasks = function(filename) {
 
 Builder.config = function(config, logfile){
     
+    if (nil(config)) {
+        _logger.debug("config is nil");
+    } else {
+        _logger.debug("config is not nil");
+    }
     
     _logger = new (winston.Logger)({
         transports: [
