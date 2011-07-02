@@ -35,8 +35,8 @@ Builder.config = function(config, logfile){
     _config = config;
     _logger = new (winston.Logger)({
         transports: [
-            new (winston.transports.Console)(),
-            new (winston.transports.File)({ filename: logfile })
+            new (winston.transports.Console)({level: "error"}),
+            new (winston.transports.File)({ filename: logfile, level: "error" })
         ]
     });
     Builder.loadTasks(config.tasks);
@@ -64,9 +64,10 @@ Builder.build = function(target) {
 };
 
 Builder.loadInternalTasks = function(){
-    var files = fs.readdirSync(path.normalize(__dirname + "/tasks"));
+    var taskPath = path.normalize(__dirname + "/tasks");
+        files = fs.readdirSync(taskPath);
     Array.from(files).each(function(file){
-        Builder.loadTasks("./tasks/" + file); 
+        Builder.loadTasks(taskPath + "/" + file); 
     });
 }
 
@@ -74,6 +75,7 @@ Builder.loadInternalTasks = function(){
 module.exports = Builder;
 
 importTargets = function(depends){
+    _logger.debug(
     if (!nil(depends)) {
         Array.from(depends).each(function(d){
             if (!_targets.contains(d)) {
