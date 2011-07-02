@@ -54,7 +54,7 @@ Builder.build = function(target) {
     _logger.info("Starting target",_targets[target]);
     //start loading in the target's required dependencies 
     if (!nil(_targets[target].depends)) {
-        importTargets(_targets[target].depends);
+        //importTargets(_targets[target].depends);
     }
     
     _logger.info("queue order: ",_queue);
