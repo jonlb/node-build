@@ -45,6 +45,8 @@ module.exports.tasks = {
 
 
 var runCombine = function(options, promise) {
+    _logger.info("options passed into runCombine: " + util.inspect(options,false,null));
+    
     var classes = !nil(options.classes) ? options.classes : null;
     var repos = !nil(options.repos) ? options.repos : null;
     var type = !nil(options.type) ? options.type : 'js';
