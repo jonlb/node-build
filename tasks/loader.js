@@ -32,12 +32,13 @@ module.exports.tasks = {
             _logger.info("no loader object found... creating.")
             loader = new jxLoader(config.loader.base);
             loader.addEvent('loadRepoDone', function(){
-               fs.writeFileSync(options.target + '/deps.json',JSON.stringify(loader.getRepoArray()),'utf-8')
+               fs.writeFileSync(options.target + '/deps.json',JSON.stringify(loader.getRepoArray()),'utf8')
                p.resolve(true);
             });
             loader.addRepository(config.loader.repos);
         } else {
-            fs.writeFileSync(options.target + '/deps.json',JSON.stringify(loader.getRepoArray()),'utf-8');
+            console.warn("object from getRepoArray(): " + utils.inspect(loader.getRepoArray(),false, null));
+            fs.writeFileSync(options.target + '/deps.json',JSON.stringify(loader.getRepoArray()),'utf8');
             p.resolve(true);
         }
         return p;
