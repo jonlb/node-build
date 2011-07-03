@@ -47,15 +47,17 @@ module.exports.tasks = {
 var runCombine = function(options, promise) {
     _logger.info("options passed into runCombine: " + util.inspect(options,false,null));
     
-    var classes = !nil(options.classes) ? options.classes : null;
-    var repos = !nil(options.repos) ? options.repos : null;
-    var type = !nil(options.type) ? options.type : 'js';
-    var includeDeps = !nil(options.includeDeps) ? options.includeDeps : true;
-    var theme = !nil(options.theme) ? options.theme : null;
-    var exclude = !nil(options.exclude) ? options.exclude : null;
-    var opts = !nil(options.opts) ? options.opts : true;
-    var compiled = loader.compile(classes, repos, type, includeDeps, theme, exclude, opts);
-    _logger.info("returned from compile: " + util.inspect(compiled, false, null));
-    fs.writeFileSync(options.target, compiled.source, 'utf-8');
+    Array.from(options).each(function(opts){
+        var classes = !nil(opts.classes) ? opts.classes : null;
+        var repos = !nil(opts.repos) ? opts.repos : null;
+        var type = !nil(opts.type) ? opts.type : 'js';
+        var includeDeps = !nil(opts.includeDeps) ? opts.includeDeps : true;
+        var theme = !nil(opts.theme) ? opts.theme : null;
+        var exclude = !nil(opts.exclude) ? opts.exclude : null;
+        var opts = !nil(opts.opts) ? opts.opts : true;
+        var compiled = loader.compile(classes, repos, type, includeDeps, theme, exclude, opts);
+        _logger.info("returned from compile: " + util.inspect(compiled, false, null));
+        fs.writeFileSync(opts.target, compiled.source, 'utf-8');
+    });
     promise.resolve(true);
 }
