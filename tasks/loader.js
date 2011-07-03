@@ -54,8 +54,8 @@ var runCombine = function(options, promise) {
         var includeDeps = !nil(opts.includeDeps) ? opts.includeDeps : true;
         var theme = !nil(opts.theme) ? opts.theme : null;
         var exclude = !nil(opts.exclude) ? opts.exclude : null;
-        var opts = !nil(opts.opts) ? opts.opts : true;
-        var compiled = loader.compile(classes, repos, type, includeDeps, theme, exclude, opts);
+        var opt = !nil(opts.opts) ? opts.opts : true;
+        var compiled = loader.compile(classes, repos, type, includeDeps, theme, exclude, opt);
         //_logger.info("returned from compile: " + util.inspect(compiled, false, null));
         console.warn("writing to target: " + opts.target);
         fs.writeFileSync(opts.target, compiled.source, 'utf8');
