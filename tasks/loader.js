@@ -37,7 +37,7 @@ module.exports.tasks = {
             });
             loader.addRepository(config.loader.repos);
         } else {
-            console.warn("object from getRepoArray(): " + utils.inspect(loader.getRepoArray(),false, null));
+            console.warn("object from getRepoArray(): " + util.inspect(loader.getRepoArray(),false, null));
             fs.writeFileSync(options.target + '/deps.json',JSON.stringify(loader.getRepoArray()),'utf8');
             p.resolve(true);
         }
