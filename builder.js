@@ -119,7 +119,12 @@ var _stack;
 runTargets = function(){
     var target = _queue.shift(),
         p = new Promise();
-    _stack = _stack.unshift(Array.clone(_targets[target].tasks));
+    
+    if (_stack !== undefined && _stack.length > 0) {
+        _stack = _stack.unshift(Array.clone(_targets[target].tasks));
+    } else {
+         _stack = Array.clone(_targets[target].tasks);
+    }
     
     _logger.info("\n\n!!!!!!!!!!!!!\nExecuting target: " + target);
     _logger.info("Target description: " + _targets[target].description);
