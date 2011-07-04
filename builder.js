@@ -64,7 +64,7 @@ Builder.config = function(config, logfile){
 };
 
 Builder.build = function(target, config) {
-    
+    var p = new Promise();
     config = nil(config) ? _config : config;
     
     _logger.info("Processing target: " + target);
@@ -82,7 +82,8 @@ Builder.build = function(target, config) {
     
     _logger.info("queue order: " + util.inspect(_queue, false, null));
     //begin processing targets
-    runTargets();
+    runTargets().then(function(){ p.resolve(true);});
+    return p;
 };
 
 Builder.loadInternalTasks = function(){
@@ -116,7 +117,8 @@ importTargets = function(depends){
 var _stack;
 
 runTargets = function(){
-    var target = _queue.shift();
+    var target = _queue.shift(),
+        p = new Promise();
     _stack = Array.clone(_targets[target].tasks);
     
     _logger.info("\n\n!!!!!!!!!!!!!\nExecuting target: " + target);
@@ -125,9 +127,12 @@ runTargets = function(){
     executeTarget(target).then(function(){
         if (_queue.length > 0) { 
             runTargets();
+        } else {
+            p.resolve(true);
         }
     });
     
+    return p;
 };
 
 

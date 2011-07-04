@@ -10,9 +10,9 @@ module.exports.tasks = {
         //first, copy passed in params to the config object
         config.params = options.params;
         
-        config.builder.build(options.target, config);
-        
-        p.resolve(p);
+        config.builder.build(options.target, config).then(function(){
+            p.resolve(true);
+        });
         
         return p;
     }
