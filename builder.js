@@ -121,7 +121,7 @@ runTargets = function(){
         p = new Promise();
     
     if (_stack !== undefined && _stack.length > 0) {
-        _stack = _stack.unshift(Array.clone(_targets[target].tasks));
+        _stack = _stack.reverse().push(Array.clone(_targets[target].tasks).reverse()).reverse();
     } else {
          _stack = Array.clone(_targets[target].tasks);
     }
