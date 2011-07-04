@@ -10,10 +10,11 @@ var addFile = function (stream, p) {
     readstream = fs.createReadStream(file, { encoding: 'utf-8' });
     
     readstream.on("end",function(){
+        readstream.destroy();
         if (files.length > 0) {
-            readstream.close();
             addFile(stream,p);
         } else {
+            stream.end();
             p.resolve(true);
         }
     });
