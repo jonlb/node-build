@@ -10,10 +10,14 @@ module.exports.tasks = {
         Array.from(options).each(function(opt){
             logger.info("Compressing file: " + opt.file);
             var orig_code = fs.readFileSync(fs.realpathSync(opt.file), 'utf-8');
-            var ast = jsp.parse(orig_code); // parse code and get the initial AST
-            ast = pro.ast_mangle(ast); // get a new AST with mangled names
-            ast = pro.ast_squeeze(ast); // get an AST with compression optimizations
-            var final_code = pro.gen_code(ast); // compressed code here
+            logger.info("\tparse code and get the initial AST");
+            var ast = jsp.parse(orig_code); 
+            logger.info("\tget a new AST with mangled names");
+            ast = pro.ast_mangle(ast);
+            logger.info("\tget an AST with compression optimizations");
+            ast = pro.ast_squeeze(ast);
+            logger.info("\tcompressed code here...");
+            var final_code = pro.gen_code(ast);
             logger.info("Writing compressed file: " + opt.target);
             fs.writeFileSync(fs.realpathSync(opt.target), final_code, 'utf-8');
         });
