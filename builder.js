@@ -7,12 +7,7 @@ require('mootools').apply(GLOBAL);
 
 
 
-var _config,
-    _targets = {},
-    _logger,
-    _queue = [],
-    _tasks = {},
-    winston = require('logger/winston'),
+var winston = require('logger/winston'),
     fs = require('fs'),
     path = require("path"),
     util = require("util"),
@@ -22,148 +17,147 @@ var _config,
 
 
 
-var Builder = {};
-
-Builder.loadTasks = function(filename) {
-    Array.from(filename).each(function(file){
-        var tasks = require(file).tasks;
-        for (var name in tasks) {
-            _logger.info("loading task: " + name);
-            _tasks[name] = tasks[name];
+var Builder = new Class({
+    
+    Implements: [Options],
+    options: {},
+    config: null,
+    targets: {},
+    logger: null,
+    queue: [],
+    stack: null,
+    tasks: {},
+    
+    initialize: function(options, logfile) {
+        this.setOptions(options);
+        this.logger = new (winston.Logger)({
+            transports: [
+                new (winston.transports.Console)({level: "silly"}),
+                new (winston.transports.File)({ filename: logfile, level: "silly" })
+            ]
+        });
+        this.logger.emitErrs = false;
+        
+        if (nil(options)) {
+            this.logger.debug("config is nil");
+        } else {
+            this.logger.debug("config is not nil");
+            this.logger.info("config: " + util.inspect(this.options, false, null));
         }
-    });
-};
-
-
-Builder.config = function(config, logfile){
+        
+        this.loadInternalTasks();
+        this.loadTasks(this.options.tasks);
+        
+    },
     
-    _logger = new (winston.Logger)({
-        transports: [
-            new (winston.transports.Console)({level: "silly"}),
-            new (winston.transports.File)({ filename: logfile, level: "silly" })
-        ]
-    });
-    _logger.emitErrs = false;
+    loadTasks: function(filename) {
+        Array.from(filename).each(function(file){
+            var tasks = require(file).tasks;
+            for (var name in tasks) {
+                this.logger.info("loading task: " + name);
+                this.tasks[name] = tasks[name];
+            }
+        });
+    },
+   
+    build: function(target, config) {
+        var p = new Promise();
+        config = nil(config) ? this.options : config;
+        
+        this.logger.info("Processing target: " + target);
+        
+        //load the target file
+        fn = require(this.options.targets + "/" + target + ".target");
+        this.targets[target] = fn(config, this.logger);
+        this.logger.info("Starting target" + util.inspect(this.targets[target], false, null));
+        //start loading in the target's required dependencies 
+        if (!nil(this.targets[target].depends)) {
+            this.importTargets(this.targets[target].depends);
+        }
+        
+        this.queue.push(target);
+        
+        this.logger.info("queue order: " + util.inspect(this.queue, false, null));
+        //begin processing targets
+        this.runTargets().then(function(){ p.resolve(true);});
+        return p;
+    },
     
-    if (nil(config)) {
-        _logger.debug("config is nil");
-    } else {
-        _logger.debug("config is not nil");
-        _logger.info("config: " + util.inspect(config, false, null));
+    loadInternalTasks: function(){
+        var taskPath = path.normalize(__dirname + "/tasks");
+            files = fs.readdirSync(taskPath);
+        Array.from(files).each(function(file){
+            this.loadTasks(taskPath + "/" + file); 
+        });
+    },
+
+    importTargets: function(depends){
+        this.logger.debug("in ImportTargets for " + util.inspect(depends,false,null));
+        if (!nil(depends)) {
+            Array.from(depends).each(function(d){
+                if (!Object.keys(this.targets).contains(d)) {
+                    this.targets[d] = (require(this.options.targets + "/" + d + ".target"))(this.options,this.logger);
+                    this.logger.info("Target config for " + d + ":\n" + util.inspect(this.targets[d],false,null));
+                    if (!nil(this.targets[d].depends)) {
+                        this.importTargets(this.targets[d].depends);
+                    }
+                    this.queue.push(d);
+                    
+                }
+            });
+        }
+    },
+    
+    runTargets: function(){
+        var target = this.queue.shift(),
+            p = new Promise();
+        
+        this.stack = Array.clone(this.targets[target].tasks);
+        
+        this.logger.info("\n\n!!!!!!!!!!!!!\nExecuting target: " + target);
+        this.logger.info("Target description: " + this.targets[target].description);
+        this.logger.info("Number of tasks: " + this.stack.length);
+        
+        executeTarget(target).then(function(){
+            if (this.queue.length > 0) { 
+                runTargets();
+            } else {
+                p.resolve(true);
+            }
+        });
+        
+        return p;
+    },
+    
+    executeTarget: function(){
+        var p = new Promise();
+        
+        var task = this.stack.shift(),
+            taskName = Object.keys(task)[0],
+            options = task[taskName];
+            
+        this.logger.info("running task: " + taskName);
+        this.tasks[taskName](options, this.options, this.logger).then(function(){
+            this.logger.info("Promise resolved from task: " + taskName);
+            if (this.stack.length === 0) {
+                this.logger.info("No more tasks...");
+                p.resolve(true);
+            } else {
+                this.logger.info("On to next task!!!");
+                this.executeTarget().then(function(){p.resolve(true);});
+            }
+        }, function(err){
+            p.reject(err);
+        });
+           
+        return p;
     }
-    
-    _logger.debug("The passed in config");
-    _config = config;
-    
-    //add the Builder to the config
-    config.builder = Builder;
-    
-    Builder.loadTasks(config.tasks);
-    Builder.loadInternalTasks();
-    return Builder;
-};
 
-Builder.build = function(target, config) {
-    var p = new Promise();
-    config = nil(config) ? _config : config;
     
-    _logger.info("Processing target: " + target);
-    
-    //load the target file
-    fn = require(_config.targets + "/" + target + ".target");
-    _targets[target] = fn(config, _logger);
-    _logger.info("Starting target" + util.inspect(_targets[target], false, null));
-    //start loading in the target's required dependencies 
-    if (!nil(_targets[target].depends)) {
-        importTargets(_targets[target].depends);
-    }
-    
-    _queue.push(target);
-    
-    _logger.info("queue order: " + util.inspect(_queue, false, null));
-    //begin processing targets
-    runTargets().then(function(){ p.resolve(true);});
-    return p;
-};
-
-Builder.loadInternalTasks = function(){
-    var taskPath = path.normalize(__dirname + "/tasks");
-        files = fs.readdirSync(taskPath);
-    Array.from(files).each(function(file){
-        Builder.loadTasks(taskPath + "/" + file); 
-    });
-}
-
+});
 
 module.exports = Builder;
 
-importTargets = function(depends){
-    _logger.debug("in ImportTargets for " + util.inspect(depends,false,null));
-    if (!nil(depends)) {
-        Array.from(depends).each(function(d){
-            if (!Object.keys(_targets).contains(d)) {
-                _targets[d] = (require(_config.targets + "/" + d + ".target"))(_config,_logger);
-                _logger.info("Target config for " + d + ":\n" + util.inspect(_targets[d],false,null));
-                if (!nil(_targets[d].depends)) {
-                    importTargets(_targets[d].depends);
-                }
-                _queue.push(d);
-                
-            }
-        });
-    }
-};
-
-var _stack;
-
-runTargets = function(){
-    var target = _queue.shift(),
-        p = new Promise();
-    
-    if (_stack !== undefined && _stack.length > 0) {
-        _stack = _stack.reverse().push(Array.clone(_targets[target].tasks).reverse()).reverse();
-    } else {
-         _stack = Array.clone(_targets[target].tasks);
-    }
-    
-    _logger.info("\n\n!!!!!!!!!!!!!\nExecuting target: " + target);
-    _logger.info("Target description: " + _targets[target].description);
-    _logger.info("Number of tasks: " + _stack.length);
-    
-    executeTarget(target).then(function(){
-        if (_queue.length > 0) { 
-            runTargets();
-        } else {
-            p.resolve(true);
-        }
-    });
-    
-    return p;
-};
 
 
-
-executeTarget = function(){
-    var p = new Promise();
-    
-    var task = _stack.shift(),
-        taskName = Object.keys(task)[0],
-        options = task[taskName];
-        
-    _logger.info("running task: " + taskName);
-    _tasks[taskName](options, _config, _logger).then(function(){
-        _logger.info("Promise resolved from task: " + taskName);
-        if (_stack.length == 0) {
-            _logger.info("No more tasks...");
-            p.resolve(true);
-        } else {
-            _logger.info("On to next task!!!");
-            executeTarget().then(function(){p.resolve(true);});
-        }
-    }, function(err){
-        p.reject(err);
-    });
-       
-    return p;
-};
             
