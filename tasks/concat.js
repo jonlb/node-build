@@ -11,7 +11,7 @@ var addFile = function (stream, p) {
     
     readstream.on("end",function(){
         if (files.length > 0) {
-            readstrem.close();
+            readstream.close();
             addFile(stream,p);
         } else {
             p.resolve(true);
