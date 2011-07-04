@@ -118,7 +118,7 @@ var Builder = new Class({
         this.logger.info("Target description: " + this.targets[target].description);
         this.logger.info("Number of tasks: " + this.stack.length);
         
-        executeTarget(target).then(function(){
+        this.executeTarget(target).then(function(){
             if (this.queue.length > 0) { 
                 this.runTargets();
             } else {
