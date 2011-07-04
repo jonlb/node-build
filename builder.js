@@ -141,9 +141,12 @@ executeTarget = function(){
         
     _logger.info("running task: " + taskName);
     _tasks[taskName](options, _config, _logger).then(function(){
+        _logger.info("Promise resolved from task: " + taskName);
         if (_stack.length == 0) {
+            _logger.info("No more tasks...");
             p.resolve(true);
         } else {
+            _logger.info("On to next task!!!");
             executeTarget().then(function(){p.resolve(true);});
         }
     }, function(err){
