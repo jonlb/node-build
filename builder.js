@@ -57,7 +57,7 @@ var Builder = new Class({
                 this.logger.info("loading task: " + name);
                 this.tasks[name] = tasks[name];
             }
-        });
+        },this);
     },
    
     build: function(target, config) {
@@ -88,7 +88,7 @@ var Builder = new Class({
             files = fs.readdirSync(taskPath);
         Array.from(files).each(function(file){
             this.loadTasks(taskPath + "/" + file); 
-        });
+        }, this);
     },
 
     importTargets: function(depends){
@@ -104,7 +104,7 @@ var Builder = new Class({
                     this.queue.push(d);
                     
                 }
-            });
+            }, this);
         }
     },
     
@@ -120,11 +120,11 @@ var Builder = new Class({
         
         executeTarget(target).then(function(){
             if (this.queue.length > 0) { 
-                runTargets();
+                this.runTargets();
             } else {
                 p.resolve(true);
             }
-        });
+        }.bind(this));
         
         return p;
     },
@@ -146,9 +146,9 @@ var Builder = new Class({
                 this.logger.info("On to next task!!!");
                 this.executeTarget().then(function(){p.resolve(true);});
             }
-        }, function(err){
+        }.bind(this), function(err){
             p.reject(err);
-        });
+        }.bind(this));
            
         return p;
     }
