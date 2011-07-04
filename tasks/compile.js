@@ -13,7 +13,7 @@ module.exports.tasks = {
             var orig_code = fs.readFileSync(fs.realpathSync(opt.file), 'utf-8'),
                 final_code = jsmin(orig_code);
             logger.info("Writing compressed file: " + opt.target);
-            fs.writeFileSync(fs.realpathSync(opt.target), final_code, 'utf-8');
+            fs.writeFileSync(opt.target, final_code, 'utf-8');
             
             /*
             logger.info("\tparse code and get the initial AST");
