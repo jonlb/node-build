@@ -14,7 +14,7 @@ module.exports.tasks = {
             logger.info("\treplacing token");
             var final = original.replace(pattern, opt.value);
             logger.info("\tsaving file");
-            fs.writeFileSync(opt.target, final, 'utf-8');
+            fs.writeFileSync(opt.file, final, 'utf-8');
         });
         
         p.resolve(true);
