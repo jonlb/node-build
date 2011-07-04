@@ -119,7 +119,7 @@ runTargets = function(){
     var target = _queue.shift();
     _stack = Array.clone(_targets[target].tasks);
     
-    _logger.info("Executing target: " + target);
+    _logger.info("\n\n!!!!!!!!!!!!!\nExecuting target: " + target);
     _logger.info("Target description: " + _targets[target].description);
     
     executeTarget(target).then(function(){
@@ -139,6 +139,7 @@ executeTarget = function(){
         taskName = Object.keys(task)[0],
         options = task[taskName];
         
+    _logger.info("running task: " + taskName);
     _tasks[taskName](options, _config, _logger).then(function(){
         if (_stack.length == 0) {
             p.resolve(true);
