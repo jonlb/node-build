@@ -4,7 +4,7 @@ var util = require("util"),
     cssmin = require("cssmin");
 
 module.exports.tasks = {
-    compile: function(options,config,logger){
+    cssmin: function(options,config,logger){
         var p = new Promise();
         Array.from(options).each(function(opt){
             logger.info("Compressing css file: " + opt.source);
