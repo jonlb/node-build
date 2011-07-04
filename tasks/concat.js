@@ -29,7 +29,7 @@ module.exports.tasks = {
     concat: function (options, config, logger) {
         var p = new Promise(),
             newFile = fs.createWriteStream(options.target);
-        
+        logger.info("In concat... options passed: " + util.inspect(options,false,null));
         _logger = logger;
         files = Array.clone(options.files);
         addFile(newFile, p);
