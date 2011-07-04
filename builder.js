@@ -55,18 +55,23 @@ Builder.config = function(config, logfile){
     _logger.debug("The passed in config");
     _config = config;
     
+    //add the Builder to the config
+    config.builder = Builder;
+    
     Builder.loadTasks(config.tasks);
     Builder.loadInternalTasks();
     return Builder;
 };
 
-Builder.build = function(target) {
+Builder.build = function(target, config) {
+    
+    config = nil(config) ? _config : config;
     
     _logger.info("Processing target: " + target);
     
     //load the target file
     fn = require(_config.targets + "/" + target + ".target");
-    _targets[target] = fn(_config, _logger);
+    _targets[target] = fn(config, _logger);
     _logger.info("Starting target" + util.inspect(_targets[target], false, null));
     //start loading in the target's required dependencies 
     if (!nil(_targets[target].depends)) {
