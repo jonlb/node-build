@@ -1,7 +1,8 @@
 var util = require("util"),
     Promise = require("promise").Promise,
     fs = require("fs"),
-    files;
+    files,
+    _logger;
 
 
 var addFile = function (stream, p) {
@@ -10,9 +11,12 @@ var addFile = function (stream, p) {
     readstream = fs.createReadStream(file, { encoding: 'utf-8' });
     
     readstream.on("end",function(){
+        _logger.debug("in end method of readstream.");
         if (files.length > 0) {
+            _logger.debug("going around again.");
             addFile(stream,p);
         } else {
+            _logger.debug("closing stream and resolving promise...");
             stream.end();
             p.resolve(true);
         }
@@ -25,7 +29,8 @@ module.exports.tasks = {
     concat: function (options, config, logger) {
         var p = new Promise(),
             newFile = fs.createWriteStream(options.target);
-            
+        
+        _logger = logger;
         files = Array.clone(options.files);
         addFile(newFile, p);
         return p;
