@@ -128,6 +128,7 @@ runTargets = function(){
     
     _logger.info("\n\n!!!!!!!!!!!!!\nExecuting target: " + target);
     _logger.info("Target description: " + _targets[target].description);
+    _logger.info("Number of tasks: " + _stack.length);
     
     executeTarget(target).then(function(){
         if (_queue.length > 0) { 
