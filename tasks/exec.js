@@ -1,6 +1,6 @@
 var util = require("util"),
     Promise = require("promise").Promise,
-    exec = require('child_process').exec,
+    spawn = require('child_process').spawn,
     fs = require("fs");
 
 module.exports.tasks = {
@@ -16,25 +16,26 @@ module.exports.tasks = {
            }
         });
         
-        //run it
-        if (opt.options !== undefined){
-            command = exec(opt.cmd, opt.options,
-              function (error, stdout, stderr) {
-                logger.info('stdout: ' + stdout);
-                logger.error('stderr: ' + stderr);
-                if (error !== null) {
-                  logger.error('exec error: ' + error);
-                }
-            });
-        } else {
-            command = exec(opt.cmd, function (error, stdout, stderr) {
-                logger.info('stdout: ' + stdout);
-                logger.error('stderr: ' + stderr);
-                if (error !== null) {
-                  logger.error('exec error: ' + error);
-                }
-            });
-        }
+        var opts = Object.merge({ cwd: undefined,
+            env: process.env,
+            customFds: [-1, -1, -1],
+            setsid: false
+        },opt.options);
+        
+        var exec = spawn(opt.cmd,opt.args,opts);
+        
+        //hook events to get status
+        exec.stdout.on("data",function(data){
+            logger.info(data);
+        });
+        
+        exec.stderr.on('data', function(data) {
+            logger.debug('closure-linter errored: ' + data);
+        });
+    
+        exec.on('exit', function(code) {
+            p.resolve(true);
+        });
         
         return p;
     }
