@@ -17,14 +17,24 @@ module.exports.tasks = {
         });
         
         //run it
-        command = exec(opt.cmd, opt.options,
-          function (error, stdout, stderr) {
-            logger.info('stdout: ' + stdout);
-            logger.error('stderr: ' + stderr);
-            if (error !== null) {
-              logger.error('exec error: ' + error);
-            }
-        });
+        if (opt.options !== undefined){
+            command = exec(opt.cmd, opt.options,
+              function (error, stdout, stderr) {
+                logger.info('stdout: ' + stdout);
+                logger.error('stderr: ' + stderr);
+                if (error !== null) {
+                  logger.error('exec error: ' + error);
+                }
+            });
+        } else {
+            command = exec(opt.cmd, function (error, stdout, stderr) {
+                logger.info('stdout: ' + stdout);
+                logger.error('stderr: ' + stderr);
+                if (error !== null) {
+                  logger.error('exec error: ' + error);
+                }
+            });
+        }
         
         return p;
     }
