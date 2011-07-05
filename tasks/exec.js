@@ -22,6 +22,7 @@ module.exports.tasks = {
             setsid: false
         },opt.options);
         
+        logger.debug("options object after merge: " + util.inspect(opts,false,null));
         var exec = spawn(opt.cmd,opt.args,opts);
         
         //hook events to get status
