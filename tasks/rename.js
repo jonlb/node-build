@@ -8,7 +8,7 @@ module.exports.tasks = {
     
         Array.from(options).each(function(opt){
             var from = fs.realpathSync(opt.from);
-            fs.renameSync(from, to);
+            fs.renameSync(from, opt.to);
         });
         
         p.resolve(true);
