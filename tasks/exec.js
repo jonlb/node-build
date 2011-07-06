@@ -31,7 +31,8 @@ module.exports.tasks = {
         });
         
         exec.stderr.on('data', function(data) {
-            logger.debug('closure-linter errored: ' + data);
+            logger.debug('exec errored: ' + data);
+            throw new Error(data);
         });
     
         exec.on('exit', function(code) {
