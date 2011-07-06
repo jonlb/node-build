@@ -13,6 +13,7 @@ module.exports.tasks = {
         var p = new Promise();
         _logger = logger;
         if (loader == null) {
+            config.loader.base.logger = _logger;
             loader = new jxLoader(config.loader.base);
             loader.addEvent('loadRepoDone', function(){
                runCombine(options, p); 
@@ -30,6 +31,7 @@ module.exports.tasks = {
         _logger = logger;
         if (loader == null) {
             _logger.info("no loader object found... creating.")
+            config.loader.base.logger = _logger;
             loader = new jxLoader(config.loader.base);
             loader.addEvent('loadRepoDone', function(){
                fs.writeFileSync(options.target + '/deps.json',JSON.stringify(loader.getRepoArray()),'utf8')
