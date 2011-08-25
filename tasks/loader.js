@@ -12,7 +12,7 @@ module.exports.tasks = {
     combine: function(options, config, logger){
         var p = new Promise();
         _logger = logger;
-        if (loader == null) {
+        if (loader === null) {
             config.loader.base.logger = _logger;
             loader = new jxLoader(config.loader.base);
             loader.addEvent('loadRepoDone', function(){
@@ -29,12 +29,12 @@ module.exports.tasks = {
     createDeps: function(options, config, logger){
         var p = new Promise();
         _logger = logger;
-        if (loader == null) {
-            _logger.info("no loader object found... creating.")
+        if (loader === null) {
+            _logger.info("no loader object found... creating.");
             config.loader.base.logger = _logger;
             loader = new jxLoader(config.loader.base);
             loader.addEvent('loadRepoDone', function(){
-               fs.writeFileSync(options.target + '/deps.json',JSON.stringify(loader.getRepoArray()),'utf8')
+               fs.writeFileSync(options.target + '/deps.json',JSON.stringify(loader.getRepoArray()),'utf8');
                p.resolve(true);
             });
             loader.addRepository(config.loader.repos);
@@ -65,4 +65,4 @@ var runCombine = function(options, promise) {
         fs.writeFileSync(opts.target, compiled.source, 'utf8');
     });
     promise.resolve(true);
-}
+};
