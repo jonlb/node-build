@@ -22,8 +22,8 @@ module.exports.tasks = {
             setsid: false
         },opt.options);
         logger.warn("type of process.env: " + typeOf(process.env));
-        logger.warn("options object after merge: " + util.inspect(opts,false,null));
-        var exec = spawn(opt.cmd,opt.args,opts);
+        //logger.warn("options object after merge: " + util.inspect(opts,false,null));
+        var exec = spawn(opt.cmd,opt.args,opt.options);
         
         //hook events to get status
         exec.stdout.on("data",function(data){
