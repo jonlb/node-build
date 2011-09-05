@@ -42,7 +42,7 @@ var Builder = new Class({
             this.logger.debug("config is nil");
         } else {
             this.logger.debug("config is not nil");
-            this.logger.info("config: " + util.inspect(this.options, false, null));
+            //this.logger.info("config: " + util.inspect(this.options, false, null));
         }
         
         this.loadInternalTasks();
