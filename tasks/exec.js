@@ -21,8 +21,8 @@ module.exports.tasks = {
             customFds: [-1, -1, -1],
             setsid: false
         },opt.options);
-        console.warn("type of process.env: " + typeOf(process.env));
-        console.warn("options object after merge: " + util.inspect(process.env,false,null));
+        logger.warn("type of process.env: " + typeOf(process.env));
+        logger.warn("options object after merge: " + util.inspect(process.env,false,null));
         var exec = spawn(opt.cmd,opt.args,opts);
         
         //hook events to get status

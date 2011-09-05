@@ -39,7 +39,7 @@ module.exports.tasks = {
             });
             loader.addRepository(config.loader.repos);
         } else {
-            console.warn("object from getRepoArray(): " + util.inspect(loader.getRepoArray(),false, null));
+            //console.warn("object from getRepoArray(): " + util.inspect(loader.getRepoArray(),false, null));
             fs.writeFileSync(options.target + '/deps.json',JSON.stringify(loader.getRepoArray()),'utf8');
             p.resolve(true);
         }
@@ -49,7 +49,7 @@ module.exports.tasks = {
 
 
 var runCombine = function(options, promise) {
-    _logger.info("options passed into runCombine: " + util.inspect(options,false,null));
+    //_logger.info("options passed into runCombine: " + util.inspect(options,false,null));
     
     Array.from(options).each(function(opts){
         var classes = !nil(opts.classes) ? opts.classes : null;
@@ -61,7 +61,7 @@ var runCombine = function(options, promise) {
         var opt = !nil(opts.opts) ? opts.opts : true;
         var compiled = loader.compile(classes, repos, type, includeDeps, theme, exclude, opt);
         //_logger.info("returned from compile: " + util.inspect(compiled, false, null));
-        console.warn("writing to target: " + opts.target);
+        _logger.warn("writing to target: " + opts.target);
         fs.writeFileSync(opts.target, compiled.source, 'utf8');
     });
     promise.resolve(true);
