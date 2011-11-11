@@ -3,17 +3,17 @@
  */
 
 //require mootools
-require('mootools').apply(GLOBAL);
+require('moo-server').apply(GLOBAL);
 
 
 
-var winston = require('logger/winston'),
+var winston = require('winston'),
     fs = require('fs'),
     path = require("path"),
     util = require("util"),
     sys = require("sys"),
-    when = require("promise").when,
-    Promise = require("promise").Promise;
+    when = require("promised-io").when,
+    Promise = require("promised-io").Promise;
 
 
 

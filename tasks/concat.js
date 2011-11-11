@@ -1,5 +1,5 @@
 var util = require("util"),
-    Promise = require("promise").Promise,
+    Promise = require("promised-io").Promise,
     fs = require("fs"),
     files,
     _logger;

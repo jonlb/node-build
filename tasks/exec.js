@@ -1,5 +1,5 @@
 var util = require("util"),
-    Promise = require("promise").Promise,
+    Promise = require("promised-io").Promise,
     spawn = require('child_process').spawn,
     fs = require("fs");
 

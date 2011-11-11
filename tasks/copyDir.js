@@ -1,5 +1,5 @@
 var util = require("util"),
-    Promise = require("promise").Promise,
+    Promise = require("promised-io").Promise,
     wrench = require("wrench"),
     fs = require("fs");
 

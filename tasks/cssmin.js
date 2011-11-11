@@ -1,7 +1,7 @@
 var util = require("util"),
-    Promise = require("promise").Promise,
+    Promise = require("promised-io").Promise,
     fs = require("fs"),
-    cssmin = require("cssmin");
+    cssmin = require("cssmin").cssmin;
 
 module.exports.tasks = {
     cssmin: function(options,config,logger){

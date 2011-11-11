@@ -1,6 +1,6 @@
 //require dependencies
-var jxLoader = require('loader/jxLoader').jxLoader,
-    Promise = require('promise').Promise,
+var jxLoader = require('jxLoader').jxLoader,
+    Promise = require('promised-io').Promise,
     fs = require('fs'),
     util = require("util");
 
