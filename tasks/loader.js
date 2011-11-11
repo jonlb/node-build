@@ -60,6 +60,7 @@ var runCombine = function(options, promise) {
         var exclude = !nil(opts.exclude) ? opts.exclude : null;
         var opt = !nil(opts.opts) ? opts.opts : true;
         loader.options.tags = opts.tags;
+        _logger.debug('tags passed in:' + util.inspect(loader.options.tags,false,null));
         var compiled = loader.compile(classes, repos, type, includeDeps, theme, exclude, opt);
         //_logger.info("returned from compile: " + util.inspect(compiled, false, null));
         _logger.warn("writing to target: " + opts.target);
