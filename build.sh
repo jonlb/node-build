@@ -5,7 +5,7 @@
  * 
  *     > build <target>
  */
-var Builder = require("./builder"),
+var Builder = require("./builder.js"),
     sys = require("sys"),
     path = require("path"),
     util = require("util"),

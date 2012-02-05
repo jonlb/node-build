@@ -1,0 +1,64 @@
+#node-builder
+
+node-builder is an ant-like build engine. It comes with many pre-written tasks that you can use in your targets to do things like concatenating files, minifying css and js files, copying files and the like. A full list of current tasks and the necessary parameters are given below.
+
+##Installing
+
+Install node-builder (just "build" on npmjs.org) with npm with:
+
+npm install build
+
+
+##Setup
+
+After installing build using npm, there are a few things you need to do before you can use node-builder to build a project:
+
+1. Create a config file. This file will provide node-builder targets with information they need to complete the build. See the sample file in the sample files directory.
+2. Create the target files. Each target should be in it's own file and should be named <target name>.target.js. The target file hold the instructions for the builder to process in the form of tasks. (See examples in teh sample files > targets directory.)
+3. Link to the build.sh file from the root of your project directory (recommended) by doing:
+
+ln -s ./node_modules/build/build.sh ./build.sh
+
+You're now ready to run a build by doing:
+
+./build.sh --target a_target_to_run
+
+## Options
+
+The build.sh script takes a couple of options (more may be added later if needed):
+
+- '--target' : indicates which target to run
+- '--config' : the location of the config file. If omitted, the builder assumes it's at ./builder/config.js relative to the build.sh file itself. Targets should always be located in a targets subdirectory in the same directory as your config file.
+- '--logfile' : the location you want the log file written to. If omitted, assumes ./build.log.
+
+
+##Tasks
+
+The following tasks are currently available:
+
+- callTarget: calls a different target and is able to pass it parameters
+- compile: uses jxLoader npm module to concatenate javascript files that conform to the MooTools header conventions. It will attempt to determine the correct order to put them in the file.
+- concat: concatenates files
+- copy: copy a file
+- copyDir: copy an entire directory
+- cssmin: uses cssmin to minimize css files
+- delete: delete a file
+- deleteDir: delete an entire directory
+- echo: prints to the screen and log file (not really necessary with the amount of logging that is currently enabled)
+- exec: executes an external process using node's child_process module
+- mkdir: makes a directory if it doesn't exist
+- rename: renames a file
+- replace: replaces string tokens with string values (i.e. [version] with an actual version number) in text-based files
+
+More to come as they are needed.
+
+##Adding your own tasks
+
+You can add your own tasks by definig them in the config.tasks array in your config file. Simplky supply a file path that can be loaded by node and the builder will attempt to require it and then access the tasks member variable to get at the tasks you supplied. See the built in tasks to see how to write them.
+
+##To Do
+
+Still to do on this:
+
+- more docs on tasks - specifically the parameters needed for each (you can find the parameters in the target files in teh sample directory for now)
+- additional tasks as needed (please leave a ticket for anything you think should be added)
