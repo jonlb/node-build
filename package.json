@@ -2,14 +2,14 @@
   "author": "Jonathan Bomgardner <jon@solagratiadesigns.com> (http://solagratiadesigns.com)",
   "name": "build",
   "description": "An ant-like build program for node",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/jonlb/node-build.git"
   },
   "main": "./builder.js",
   "engines": {
-    "node": "~v0.4.12"
+    "node": ">v0.4.12"
   },
   "dependencies": {
     "jxLoader": "*",
