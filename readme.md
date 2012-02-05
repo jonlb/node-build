@@ -6,8 +6,9 @@ node-builder is an ant-like build engine. It comes with many pre-written tasks t
 
 Install node-builder (just "build" on npmjs.org) with npm with:
 
+```
 npm install build
-
+```
 
 ##Setup
 
@@ -17,11 +18,15 @@ After installing build using npm, there are a few things you need to do before y
 2. Create the target files. Each target should be in it's own file and should be named <target name>.target.js. The target file hold the instructions for the builder to process in the form of tasks. (See examples in teh sample files > targets directory.)
 3. Link to the build.sh file from the root of your project directory (recommended) by doing:
 
+```
 ln -s ./node_modules/build/build.sh ./build.sh
+```
 
 You're now ready to run a build by doing:
 
+```
 ./build.sh --target a_target_to_run
+```
 
 ## Options
 
