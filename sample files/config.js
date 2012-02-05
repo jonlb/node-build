@@ -3,9 +3,11 @@ var fs = require('fs');
 var basedir = fs.realpathSync(__dirname + "/.."),
     config = {
         project: { 
-            basedir: basedir, 
-            "default": "deploy"
+            basedir: basedir,  //the base drectory of the entire project
+            "default": "deploy" //the default target that should be run when --target option is not specified
         },
+        //This section is optional and can be used for passing all manner of options and configs for the targets
+        //to use
         app: {
             name: "jxlib",
             path: "/jxlib",
@@ -20,10 +22,12 @@ var basedir = fs.realpathSync(__dirname + "/.."),
         }
     };
 
+//Used by the exec task to locate external dependencies
 config.dependencies = {
     NaturalDocs: config.app.utils + "/NaturalDocs-1.4/NaturalDocs"
 };
 
+//configuration options for jxLoader task/npm module
 config.loader = {
     base: {
         'moveImages': false,
@@ -52,6 +56,7 @@ config.loader = {
     }
 };
 
+//List your custom tasks here
 config.tasks = [];
 
 module.exports = config;
