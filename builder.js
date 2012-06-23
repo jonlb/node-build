@@ -11,7 +11,7 @@ var winston = require('winston'),
     fs = require('fs'),
     path = require("path"),
     util = require("util"),
-    sys = require("sys"),
+    util = require('util'),
     when = require("promised-io").when,
     Promise = require("promised-io").Promise;
 
