@@ -8,7 +8,7 @@ module.exports.tasks = {
         var p = new Promise();
         Array.from(options).each(function(file){
             logger.info("Checking for file: " + file);
-            if (path.existsSync(file)) {
+            if (fs.existsSync(file)) {
                 logger.info("Removing file: " + file);
                 fs.unlinkSync(file);
             }
