@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/jonlb/node-build.png)](http://travis-ci.org/jonlb/node-build)
 #node-builder
 
 node-builder is an ant-like build engine. It comes with many pre-written tasks that you can use in your targets to do things like concatenating files, minifying css and js files, copying files and the like. A full list of current tasks and the necessary parameters are given below.
