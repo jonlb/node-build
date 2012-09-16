@@ -8,7 +8,7 @@ module.exports.tasks = {
         var p = new Promise();
         Array.from(options).each(function(dir){
             
-            if (path.existsSync(dir)) {
+            if (fs.existsSync(dir)) {
                 logger.info("removing directory: " + dir);
                 wrench.rmdirSyncRecursive(dir);
             } else {
